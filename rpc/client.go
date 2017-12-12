@@ -81,7 +81,7 @@ func (client *Client) BlockNumber() (uint64, error) {
 
 	var data string
 
-	err := client.call("eth_blockNumber", &data, "latest")
+	err := client.call("eth_blockNumber", &data)
 
 	if err != nil {
 		return 0, err
