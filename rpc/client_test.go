@@ -13,8 +13,8 @@ var cnf *config.Config
 var client *Client
 
 func init() {
-	cnf, _ = config.NewFromFile("./test.json")
-	client = NewClient(cnf.GetString("server", "http://47.100.110.75:8545"))
+	cnf, _ = config.NewFromFile("../../conf/test.json")
+	client = NewClient(cnf.GetString("ethmainnet", "http://xxxxxxx:8545"))
 }
 
 func TestBalance(t *testing.T) {
@@ -46,7 +46,7 @@ func TestBlocksPerSecond(t *testing.T) {
 
 func TestGetBlockByNumber(t *testing.T) {
 
-	blocknumber, err := client.GetBlockByNumber(11)
+	blocknumber, err := client.GetBlockByNumber(3650534)
 
 	assert.NoError(t, err)
 
