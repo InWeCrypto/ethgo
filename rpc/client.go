@@ -3,12 +3,14 @@ package rpc
 import (
 	"bytes"
 	"encoding/hex"
+	"encoding/json"
 	"fmt"
 	"math/big"
 	"reflect"
 	"strings"
 
 	"github.com/dynamicgo/slf4go"
+	"github.com/inwecrypto/ethgo"
 	"github.com/ybbus/jsonrpc"
 )
 
@@ -51,18 +53,18 @@ func (client *Client) call(method string, result interface{}, args ...interface{
 
 	buff.Reset()
 
-	// responsedata, _ := json.Marshal(response)
+	responsedata, _ := json.Marshal(response)
 
-	// buff.WriteString(fmt.Sprintf("jsonrpc call: %s\n", method))
-	// buff.WriteString(fmt.Sprintf("\tresult: %s\n", responsedata))
+	buff.WriteString(fmt.Sprintf("jsonrpc call: %s\n", method))
+	buff.WriteString(fmt.Sprintf("\tresult: %s\n", responsedata))
 
-	// client.Debug(buff.String())
+	client.Debug(buff.String())
 
 	return response.GetObject(result)
 }
 
 // GetBalance get balance of eth address
-func (client *Client) GetBalance(address string) (value *big.Int, err error) {
+func (client *Client) GetBalance(address string) (value *ethgo.Value, err error) {
 
 	var data string
 
@@ -72,7 +74,13 @@ func (client *Client) GetBalance(address string) (value *big.Int, err error) {
 		return nil, err
 	}
 
-	return readBigint(data)
+	val, err := readBigint(data)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return (*ethgo.Value)(val), nil
 }
 
 // BlockNumber get geth last block number
@@ -81,6 +89,25 @@ func (client *Client) BlockNumber() (uint64, error) {
 	var data string
 
 	err := client.call("eth_blockNumber", &data)
+
+	if err != nil {
+		return 0, err
+	}
+
+	val, err := readBigint(data)
+
+	if err != nil {
+		return 0, err
+	}
+
+	return val.Uint64(), nil
+}
+
+// Nonce get address send transactions
+func (client *Client) Nonce(address string) (uint64, error) {
+	var data string
+
+	err := client.call("eth_getTransactionCount", &data, address, "latest")
 
 	if err != nil {
 		return 0, err
@@ -134,8 +161,10 @@ func readBigint(source string) (*big.Int, error) {
 		return value, nil
 	}
 
-	if strings.HasPrefix(source, "0x") {
-		source = source[2:]
+	source = strings.TrimPrefix(source, "0x")
+
+	if len(source)%2 != 0 {
+		source = "0" + source
 	}
 
 	data, err := hex.DecodeString(source)
