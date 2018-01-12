@@ -11,6 +11,7 @@ import (
 
 	"github.com/dynamicgo/slf4go"
 	"github.com/inwecrypto/ethgo"
+	"github.com/inwecrypto/ethgo/erc20"
 	"github.com/ybbus/jsonrpc"
 )
 
@@ -36,7 +37,8 @@ func (client *Client) call(method string, result interface{}, args ...interface{
 	buff.WriteString(fmt.Sprintf("\tresult: %v\n", reflect.TypeOf(result)))
 
 	for i, arg := range args {
-		buff.WriteString(fmt.Sprintf("\targ(%d): %v\n", i, arg))
+		data, _ := json.Marshal(arg)
+		buff.WriteString(fmt.Sprintf("\targ(%d): %v\n", i, string(data)))
 	}
 
 	client.Debug(buff.String())
@@ -131,9 +133,9 @@ func (client *Client) BlockPerSecond() (val float64, err error) {
 }
 
 // Call eth call
-func (client *Client) Call(callsite *CallSite) (val float64, err error) {
+func (client *Client) Call(callsite *CallSite) (val string, err error) {
 
-	err = client.call("eth_call", callsite, "latest", &val)
+	err = client.call("eth_call", &val, callsite, "latest")
 
 	return
 }
@@ -152,6 +154,46 @@ func (client *Client) GetTransactionByHash(tx string) (val *Transaction, err err
 	err = client.call("eth_getTransactionByHash", &val, tx)
 
 	return
+}
+
+// SendRawTransaction .
+func (client *Client) SendRawTransaction(tx []byte) (val string, err error) {
+
+	err = client.call("eth_sendRawTransaction", &val, "0x"+hex.EncodeToString(tx))
+
+	return
+}
+
+// GetTokenBalance .
+func (client *Client) GetTokenBalance(token string, address string) (val *big.Int, err error) {
+	data := erc20.BalanceOf(address)
+
+	valstr, err := client.Call(&CallSite{
+		To:   token,
+		Data: data,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return readBigint(valstr)
+}
+
+// GetTokenDecimals .
+func (client *Client) GetTokenDecimals(token string) (val *big.Int, err error) {
+	data := erc20.GetDecimals()
+
+	valstr, err := client.Call(&CallSite{
+		To:   token,
+		Data: data,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return readBigint(valstr)
 }
 
 func readBigint(source string) (*big.Int, error) {

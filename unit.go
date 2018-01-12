@@ -45,3 +45,15 @@ func NewValue(val *big.Float, unit Unit) *Value {
 
 	return (*Value)(result)
 }
+
+// CustomerValue .
+func CustomerValue(val *big.Int, decimals *big.Int) *big.Float {
+
+	var val2 = big.NewInt(10)
+
+	for i := uint64(1); i < decimals.Uint64(); i++ {
+		val2 = new(big.Int).Mul(val2, big.NewInt(10))
+	}
+
+	return new(big.Float).Quo(new(big.Float).SetInt(val), new(big.Float).SetInt(val2))
+}

@@ -40,10 +40,10 @@ type Transaction struct {
 
 // CallSite .
 type CallSite struct {
-	From     string `json:"from"`
-	To       string `json:"to"`
-	Value    string `json:"value"`
-	GasPrice string `json:"gasPrice"`
-	Gas      string `json:"gas"`
-	Data     string `json:"data"`
+	From     string `json:"from,omitempty"`
+	To       string `json:"to,omitempty"`
+	Value    string `json:"value,omitempty"`
+	GasPrice string `json:"gasPrice,omitempty"`
+	Gas      string `json:"gas,omitempty"`
+	Data     string `json:"data,omitempty"`
 }

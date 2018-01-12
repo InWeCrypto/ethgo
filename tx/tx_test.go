@@ -6,6 +6,8 @@ import (
 	"math/big"
 	"testing"
 
+	"github.com/stretchr/testify/require"
+
 	"github.com/dynamicgo/config"
 	"github.com/inwecrypto/ethgo"
 	"github.com/inwecrypto/ethgo/keystore"
@@ -36,6 +38,24 @@ func init() {
 	client = rpc.NewClient(cnf.GetString("ethtestnet", "http://xxxxxxx:8545"))
 }
 
+func TestTokenTransfer(t *testing.T) {
+
+	println(key.Address)
+
+	deciamls, err := client.GetTokenDecimals("0x96ae993fe6ac1786478d3d0b0eff780bff038276")
+
+	require.NoError(t, err)
+
+	println("deciamls :", deciamls.Int64())
+
+	balance, err := client.GetTokenBalance("0x96ae993fe6ac1786478d3d0b0eff780bff038276", key.Address)
+
+	require.NoError(t, err)
+
+	println("balance :", ethgo.CustomerValue(balance, deciamls).String())
+
+}
+
 func TestSign(t *testing.T) {
 
 	println("test address", key.Address)
@@ -53,9 +73,23 @@ func TestSign(t *testing.T) {
 	println("balance", fmt.Sprintf("%.018f", balance.As(ethgo.Ether)))
 
 	tranferValue := ethgo.NewValue(big.NewFloat(0.1), ethgo.Ether)
-	gasLimits := big.NewInt(200)
-	gasPrice := ethgo.NewValue(big.NewFloat(20), ethgo.Wei)
 
-	NewTx(nonce, key.Address, tranferValue, gasPrice, gasLimits, nil)
+	gasLimits := big.NewInt(21000)
+
+	gasPrice := ethgo.NewValue(big.NewFloat(20), ethgo.Shannon)
+
+	tx := NewTx(nonce, key.Address, tranferValue, gasPrice, gasLimits, nil)
+
+	require.NoError(t, tx.Sign(key.PrivateKey))
+
+	rawtx, err := tx.Encode()
+
+	require.NoError(t, err)
+
+	id, err := client.SendRawTransaction(rawtx)
+
+	require.NoError(t, err)
+
+	println(id)
 
 }

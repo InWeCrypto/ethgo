@@ -14,6 +14,7 @@ const (
 	signTransfer    = "transfer(address,uint256)"
 	eventTransfer   = "Transfer(address,address,uint256)"
 	initWallet      = "initWallet(address[],uint256,uint256)"
+	decimals        = "decimals()"
 )
 
 // Method/Event id
@@ -21,6 +22,7 @@ var (
 	TransferID   = SignABI(signTransfer)
 	BalanceOfID  = SignABI(signBalanceOf)
 	InitWalletID = SignABI(initWallet)
+	Decimals     = SignABI(decimals)
 )
 
 // SignABI sign abi string
@@ -36,7 +38,12 @@ func SignABI(abi string) string {
 func BalanceOf(address string) string {
 	address = strings.Trim(address, "0x")
 
-	return fmt.Sprintf("0x%s%s", SignABI(signBalanceOf), address)
+	return fmt.Sprintf("0x%s%s", BalanceOfID, packNumeric(address, 32))
+}
+
+// GetDecimals .
+func GetDecimals() string {
+	return fmt.Sprintf("0x%s", Decimals)
 }
 
 func packNumeric(value string, bytes int) string {
