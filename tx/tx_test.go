@@ -1,6 +1,7 @@
 package tx
 
 import (
+	"encoding/hex"
 	"fmt"
 	"io/ioutil"
 	"math/big"
@@ -10,6 +11,7 @@ import (
 
 	"github.com/dynamicgo/config"
 	"github.com/inwecrypto/ethgo"
+	"github.com/inwecrypto/ethgo/erc20"
 	"github.com/inwecrypto/ethgo/keystore"
 	"github.com/inwecrypto/ethgo/rpc"
 	"github.com/stretchr/testify/assert"
@@ -53,6 +55,36 @@ func TestTokenTransfer(t *testing.T) {
 	require.NoError(t, err)
 
 	println("balance :", ethgo.CustomerValue(balance, deciamls).String())
+
+	transferValue := ethgo.FromCustomerValue(big.NewFloat(200.0), deciamls)
+
+	codes, err := erc20.Transfer(key.Address, hex.EncodeToString(transferValue.Bytes()))
+
+	require.NoError(t, err)
+
+	println("erc20 transfer code :", hex.EncodeToString(codes))
+
+	gasLimits := big.NewInt(61000)
+
+	gasPrice := ethgo.NewValue(big.NewFloat(20), ethgo.Shannon)
+
+	nonce, err := client.Nonce(key.Address)
+
+	require.NoError(t, err)
+
+	tx := NewTx(nonce, "0x96ae993fe6ac1786478d3d0b0eff780bff038276", nil, gasPrice, gasLimits, codes)
+
+	require.NoError(t, tx.Sign(key.PrivateKey))
+
+	rawtx, err := tx.Encode()
+
+	require.NoError(t, err)
+
+	id, err := client.SendRawTransaction(rawtx)
+
+	require.NoError(t, err)
+
+	println(id)
 
 }
 

@@ -57,3 +57,16 @@ func CustomerValue(val *big.Int, decimals *big.Int) *big.Float {
 
 	return new(big.Float).Quo(new(big.Float).SetInt(val), new(big.Float).SetInt(val2))
 }
+
+// FromCustomerValue .
+func FromCustomerValue(val *big.Float, decimals *big.Int) *big.Int {
+	var val2 = big.NewInt(10)
+
+	for i := uint64(1); i < decimals.Uint64(); i++ {
+		val2 = new(big.Int).Mul(val2, big.NewInt(10))
+	}
+
+	val3, _ := new(big.Float).Mul(val, new(big.Float).SetInt(val2)).Int(nil)
+
+	return val3
+}

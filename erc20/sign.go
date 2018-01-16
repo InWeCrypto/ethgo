@@ -59,9 +59,12 @@ func packNumeric(value string, bytes int) string {
 }
 
 // Transfer .
-func Transfer(to string, value string) string {
-	to = packNumeric(to, 20)
-	value = packNumeric(value, 32)
+func Transfer(to string, value string) ([]byte, error) {
+	to = packNumeric(strings.TrimPrefix(to, "0x"), 32)
+	value = packNumeric(strings.TrimPrefix(value, "0x"), 32)
 
-	return fmt.Sprintf("0x%s%s%s", SignABI(signTransfer), to, value)
+	data := fmt.Sprintf("%s%s%s", SignABI(signTransfer), to, value)
+	println(data)
+
+	return hex.DecodeString(data)
 }
