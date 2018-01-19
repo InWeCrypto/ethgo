@@ -1,0 +1,50 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"path": "github.com/dynamicgo/slf4go",
+			"revision": ""
+		},
+		{
+			"checksumSHA1": "Hd1Y5DkzYULQzJlSgYv2w5SiEAo=",
+			"path": "github.com/ethereum/go-ethereum/common/math",
+			"revision": "02aeb3d76652a4c0451e5c3734e6881aefe46249",
+			"revisionTime": "2018-01-16T16:23:41Z"
+		},
+		{
+			"path": "github.com/inwecrypto/bip39",
+			"revision": ""
+		},
+		{
+			"checksumSHA1": "WGWmmKZJkO6M83bc9FXNu6Z7j3w=",
+			"path": "github.com/inwecrypto/gosecp256k1",
+			"revision": "4951bff9063ca14cad8dc412d3a7d5b59f8d2994",
+			"revisionTime": "2017-12-24T12:06:08Z",
+			"tree": true
+		},
+		{
+			"path": "github.com/inwecrypto/keystore",
+			"revision": ""
+		},
+		{
+			"path": "github.com/inwecrypto/sha3",
+			"revision": ""
+		},
+		{
+			"path": "github.com/pborman/uuid",
+			"revision": ""
+		},
+		{
+			"path": "github.com/ybbus/jsonrpc",
+			"revision": ""
+		},
+		{
+			"checksumSHA1": "dHh6VeHcbNg11miGjGEl8LbPe7w=",
+			"path": "golang.org/x/crypto/scrypt",
+			"revision": "ee41a25c63fb5b74abf2213abb6dee3751e6ac4a",
+			"revisionTime": "2018-01-10T11:42:30Z"
+		}
+	],
+	"rootPath": "github.com/inwecrypto/ethgo"
+}

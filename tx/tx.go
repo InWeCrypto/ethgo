@@ -6,8 +6,8 @@ import (
 	"math/big"
 	"strings"
 
-	"github.com/inwecrypto/cryptox/math"
 	"github.com/inwecrypto/ethgo"
+	"github.com/inwecrypto/ethgo/math"
 	"github.com/inwecrypto/ethgo/rlp"
 	secp256k1 "github.com/inwecrypto/gosecp256k1"
 	"github.com/inwecrypto/sha3"
