@@ -13,6 +13,11 @@ import (
 	"github.com/inwecrypto/sha3"
 )
 
+// const asset .
+const (
+	EthAsset = "0x0000000000000000000000000000000000000000"
+)
+
 // Tx .
 type Tx struct {
 	AccountNonce uint64    `json:"nonce"    gencodec:"required"`

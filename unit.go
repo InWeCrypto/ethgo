@@ -38,6 +38,11 @@ func (value *Value) Format(s fmt.State, format rune) {
 	(*big.Int)(value).Format(s, format)
 }
 
+// Bytes .
+func (value *Value) Bytes() []byte {
+	return (*big.Int)(value).Bytes()
+}
+
 // NewValue create new eth value
 func NewValue(val *big.Float, unit Unit) *Value {
 	u := big.NewFloat(float64(unit))
