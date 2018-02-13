@@ -15,12 +15,13 @@ import (
 	"github.com/inwecrypto/ethgo/erc20"
 	"github.com/inwecrypto/ethgo/keystore"
 	"github.com/inwecrypto/ethgo/rpc"
+	"github.com/inwecrypto/ethgo/tx"
 )
 
 var key *keystore.Key
 
 func init() {
-	rawdata, err := ioutil.ReadFile("../../conf/keystore.json")
+	rawdata, err := ioutil.ReadFile("../../../conf/keystore.json")
 
 	if err != nil {
 		panic(err)
@@ -36,7 +37,7 @@ func init() {
 var client *rpc.Client
 
 func init() {
-	cnf, _ := config.NewFromFile("../../conf/test.json")
+	cnf, _ := config.NewFromFile("../../../conf/test.json")
 	client = rpc.NewClient(cnf.GetString("ethtestnet", "http://xxxxxxx:8545"))
 }
 
@@ -72,7 +73,7 @@ func TestTokenTransfer(t *testing.T) {
 
 	require.NoError(t, err)
 
-	tx := NewTx(nonce, "0x96ae993fe6ac1786478d3d0b0eff780bff038276", nil, gasPrice, gasLimits, codes)
+	tx := tx.NewTx(nonce, "0x96ae993fe6ac1786478d3d0b0eff780bff038276", nil, gasPrice, gasLimits, codes)
 
 	require.NoError(t, tx.Sign(key.PrivateKey))
 
@@ -106,19 +107,21 @@ func TestSign(t *testing.T) {
 
 	tranferValue := ethgo.NewValue(big.NewFloat(0.01), ethgo.Ether)
 
-	gasLimits := big.NewInt(21000)
+	gasLimits := big.NewInt(90000)
 
-	gasPrice := ethgo.NewValue(big.NewFloat(20), ethgo.Shannon)
+	gasPrice := ethgo.NewValue(big.NewFloat(22), ethgo.Shannon)
 
-	tx := NewTx(nonce, key.Address, tranferValue, gasPrice, gasLimits, nil)
+	txdata := tx.NewTx(nonce, key.Address, tranferValue, gasPrice, gasLimits, nil)
 
-	require.NoError(t, tx.Sign(key.PrivateKey))
+	require.NoError(t, txdata.Sign(key.PrivateKey))
 
-	rawtx, err := tx.Encode()
+	rawtx, err := txdata.Encode()
 
 	require.NoError(t, err)
 
-	// rawtx, _ := hex.DecodeString("f8670b8083015f9094625e57af0057a4566255a2525303e68cdfe6606b872386f26fc10000801ba058684fd15bd356c67eb9cd24bb8ba20b866f6784d0665504e47ac3bd6f3baab6a069a6d78490c35ee13685abddd2d022ba966330c91a39bcf3e2abf41b60105d04")
+	println(hex.EncodeToString(rawtx))
+
+	// // rawtx, _ := hex.DecodeString("f8670b8083015f9094625e57af0057a4566255a2525303e68cdfe6606b872386f26fc10000801ba058684fd15bd356c67eb9cd24bb8ba20b866f6784d0665504e47ac3bd6f3baab6a069a6d78490c35ee13685abddd2d022ba966330c91a39bcf3e2abf41b60105d04")
 
 	id, err := client.SendRawTransaction(rawtx)
 

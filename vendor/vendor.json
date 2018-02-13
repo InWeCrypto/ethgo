@@ -35,22 +35,34 @@
 			"revisionTime": "2018-01-24T07:19:27Z"
 		},
 		{
-			"checksumSHA1": "+vDcbfZYZtYHdQCaGYpsttM9T2M=",
-			"path": "github.com/inwecrypto/gosecp256k1",
-			"revision": "4951bff9063ca14cad8dc412d3a7d5b59f8d2994",
-			"revisionTime": "2017-12-24T12:06:08Z"
+			"path": "github.com/inwecrypto/gosecp256k",
+			"revision": "",
+			"tree": true
 		},
 		{
-			"checksumSHA1": "MXBgTjIJY7tkDHY8osdmrxlHMcE=",
-			"path": "github.com/inwecrypto/gosecp256k1/math",
-			"revision": "4951bff9063ca14cad8dc412d3a7d5b59f8d2994",
-			"revisionTime": "2017-12-24T12:06:08Z"
+			"checksumSHA1": "Z78I4P3ZWQQuohCOMbXJL98BnQs=",
+			"path": "github.com/inwecrypto/gosecp256k1",
+			"revision": "c3b78a6a88fed1a9d9007e84c0a3f04b3f08dd78",
+			"revisionTime": "2018-02-13T07:03:11Z",
+			"tree": true
+		},
+		{
+			"checksumSHA1": "qKe/OzkcXSVrsb/6DvlXzSjojzU=",
+			"path": "github.com/inwecrypto/keystore",
+			"revision": "87e528249999783dcced9381c5e0981374859f5b",
+			"revisionTime": "2017-11-23T09:47:33Z"
 		},
 		{
 			"checksumSHA1": "sm6sADV6ESYOJmXHfU/D0egDfHc=",
 			"path": "github.com/inwecrypto/sha3",
 			"revision": "d0fd118c5827f1029b6b82df91da54acf5a2f145",
 			"revisionTime": "2017-11-23T09:41:27Z"
+		},
+		{
+			"checksumSHA1": "As1PSFJop3xi3W8tAYSm/8YesAQ=",
+			"path": "github.com/pborman/uuid",
+			"revision": "c65b2f87fee37d1c7854c9164a450713c28d50cd",
+			"revisionTime": "2018-01-22T19:00:07Z"
 		},
 		{
 			"checksumSHA1": "zKKp5SZ3d3ycKe4EKMNT0BqAWBw=",
@@ -83,6 +95,12 @@
 			"path": "golang.org/x/crypto/pbkdf2",
 			"revision": "966f9a85b83a2d10d877e734720a57f4559d1cd0",
 			"revisionTime": "2018-01-24T07:19:27Z"
+		},
+		{
+			"checksumSHA1": "dHh6VeHcbNg11miGjGEl8LbPe7w=",
+			"path": "golang.org/x/crypto/scrypt",
+			"revision": "a6600008915114d9c087fad9f03d75087b1a74df",
+			"revisionTime": "2018-01-19T09:51:11Z"
 		}
 	],
 	"rootPath": "github.com/inwecrypto/ethgo"
