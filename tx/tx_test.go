@@ -7,6 +7,7 @@ import (
 	"math/big"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
 	"github.com/dynamicgo/config"
@@ -14,7 +15,6 @@ import (
 	"github.com/inwecrypto/ethgo/erc20"
 	"github.com/inwecrypto/ethgo/keystore"
 	"github.com/inwecrypto/ethgo/rpc"
-	"github.com/stretchr/testify/assert"
 )
 
 var key *keystore.Key
@@ -26,7 +26,7 @@ func init() {
 		panic(err)
 	}
 
-	key, err = keystore.ReadKeyStore(rawdata, "test")
+	key, err = keystore.ReadKeyStore(rawdata, "Lalala123")
 
 	if err != nil {
 		panic(err)
@@ -104,7 +104,7 @@ func TestSign(t *testing.T) {
 
 	println("balance", fmt.Sprintf("%.018f", balance.As(ethgo.Ether)))
 
-	tranferValue := ethgo.NewValue(big.NewFloat(0.1), ethgo.Ether)
+	tranferValue := ethgo.NewValue(big.NewFloat(0.01), ethgo.Ether)
 
 	gasLimits := big.NewInt(21000)
 
@@ -117,6 +117,8 @@ func TestSign(t *testing.T) {
 	rawtx, err := tx.Encode()
 
 	require.NoError(t, err)
+
+	// rawtx, _ := hex.DecodeString("f8670b8083015f9094625e57af0057a4566255a2525303e68cdfe6606b872386f26fc10000801ba058684fd15bd356c67eb9cd24bb8ba20b866f6784d0665504e47ac3bd6f3baab6a069a6d78490c35ee13685abddd2d022ba966330c91a39bcf3e2abf41b60105d04")
 
 	id, err := client.SendRawTransaction(rawtx)
 

@@ -14,7 +14,7 @@ var client *Client
 
 func init() {
 	cnf, _ = config.NewFromFile("../../conf/test.json")
-	client = NewClient(cnf.GetString("ethmainnet", "http://xxxxxxx:8545"))
+	client = NewClient(cnf.GetString("ethtestnet", "http://xxxxxxx:8545"))
 }
 
 func TestBalance(t *testing.T) {
@@ -46,12 +46,11 @@ func TestBlocksPerSecond(t *testing.T) {
 
 func TestGetBlockByNumber(t *testing.T) {
 
-	blocknumber, err := client.GetBlockByNumber(3650534)
+	blocknumber, err := client.GetBlockByNumber(5070477)
 
 	assert.NoError(t, err)
 
 	printResult(blocknumber)
-	printResult(fmt.Sprintf("0x%2x", 0))
 }
 
 func TestGetTransactionByHash(t *testing.T) {
