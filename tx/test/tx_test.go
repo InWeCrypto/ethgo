@@ -21,13 +21,13 @@ import (
 var key *keystore.Key
 
 func init() {
-	rawdata, err := ioutil.ReadFile("../../../conf/keystore.json")
+	rawdata, err := ioutil.ReadFile("../../../conf/tnc.json")
 
 	if err != nil {
 		panic(err)
 	}
 
-	key, err = keystore.ReadKeyStore(rawdata, "Lalala123")
+	key, err = keystore.ReadKeyStore(rawdata, "123456")
 
 	if err != nil {
 		panic(err)
@@ -45,21 +45,21 @@ func TestTokenTransfer(t *testing.T) {
 
 	println(key.Address)
 
-	deciamls, err := client.GetTokenDecimals("0x96ae993fe6ac1786478d3d0b0eff780bff038276")
+	deciamls, err := client.GetTokenDecimals("0x9b7929b142dddc08b889c146340c872cf8d6de71")
 
 	require.NoError(t, err)
 
 	println("deciamls :", deciamls.Int64())
 
-	balance, err := client.GetTokenBalance("0x96ae993fe6ac1786478d3d0b0eff780bff038276", key.Address)
+	balance, err := client.GetTokenBalance("0x9b7929b142dddc08b889c146340c872cf8d6de71", key.Address)
 
 	require.NoError(t, err)
 
 	println("balance :", ethgo.CustomerValue(balance, deciamls).String())
 
-	transferValue := ethgo.FromCustomerValue(big.NewFloat(200.0), deciamls)
+	transferValue := ethgo.FromCustomerValue(big.NewFloat(10000), deciamls)
 
-	codes, err := erc20.Transfer(key.Address, hex.EncodeToString(transferValue.Bytes()))
+	codes, err := erc20.Transfer("0xd253e53c2ee464823cf85f967c75d310012692ae", hex.EncodeToString(transferValue.Bytes()))
 
 	require.NoError(t, err)
 
@@ -73,7 +73,7 @@ func TestTokenTransfer(t *testing.T) {
 
 	require.NoError(t, err)
 
-	tx := tx.NewTx(nonce, "0x96ae993fe6ac1786478d3d0b0eff780bff038276", nil, gasPrice, gasLimits, codes)
+	tx := tx.NewTx(nonce, "0x9b7929b142dddc08b889c146340c872cf8d6de71", nil, gasPrice, gasLimits, codes)
 
 	require.NoError(t, tx.Sign(key.PrivateKey))
 
