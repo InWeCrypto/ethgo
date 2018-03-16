@@ -9,9 +9,10 @@ import (
 	"reflect"
 	"strings"
 
+	"ethgo"
+	"ethgo/erc20"
+
 	"github.com/dynamicgo/slf4go"
-	"github.com/inwecrypto/ethgo"
-	"github.com/inwecrypto/ethgo/erc20"
 	"github.com/ybbus/jsonrpc"
 )
 
@@ -76,7 +77,7 @@ func (client *Client) GetBalance(address string) (value *ethgo.Value, err error)
 		return nil, err
 	}
 
-	val, err := readBigint(data)
+	val, err := ReadBigint(data)
 
 	if err != nil {
 		return nil, err
@@ -96,7 +97,7 @@ func (client *Client) BlockNumber() (uint64, error) {
 		return 0, err
 	}
 
-	val, err := readBigint(data)
+	val, err := ReadBigint(data)
 
 	if err != nil {
 		return 0, err
@@ -115,7 +116,7 @@ func (client *Client) Nonce(address string) (uint64, error) {
 		return 0, err
 	}
 
-	val, err := readBigint(data)
+	val, err := ReadBigint(data)
 
 	if err != nil {
 		return 0, err
@@ -177,7 +178,7 @@ func (client *Client) GetTokenBalance(token string, address string) (val *big.In
 		return nil, err
 	}
 
-	return readBigint(valstr)
+	return ReadBigint(valstr)
 }
 
 // GetTokenDecimals .
@@ -193,10 +194,11 @@ func (client *Client) GetTokenDecimals(token string) (val *big.Int, err error) {
 		return nil, err
 	}
 
-	return readBigint(valstr)
+	return ReadBigint(valstr)
 }
 
-func readBigint(source string) (*big.Int, error) {
+// ReadBigint .
+func ReadBigint(source string) (*big.Int, error) {
 	value := big.NewInt(0)
 
 	if source == "0x0" {
