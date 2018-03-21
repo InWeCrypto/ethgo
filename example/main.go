@@ -1,9 +1,11 @@
 package main
 
 import (
-	"ethgo/erc20"
-	"ethgo/rpc"
 	"fmt"
+
+	"github.com/inwecrypto/ethgo/rpc"
+
+	"github.com/inwecrypto/ethgo/erc20"
 )
 
 var client *rpc.Client
