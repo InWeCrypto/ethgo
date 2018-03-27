@@ -14,7 +14,7 @@ var client *Client
 
 func init() {
 	cnf, _ = config.NewFromFile("../../conf/test.json")
-	client = NewClient(cnf.GetString("ethtestnet", "http://xxxxxxx:8545"))
+	client = NewClient(cnf.GetString("ethtest2", "http://xxxxxxx:8545"))
 }
 
 func TestBalance(t *testing.T) {
