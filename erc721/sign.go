@@ -67,9 +67,9 @@ func SignABI(abi string) string {
 
 // BalanceOf create erc20 balanceof abi string
 func BalanceOf(address string) string {
-	address = strings.Trim(address, "0x")
+	address = packNumeric(strings.Trim(address, "0x"), 32)
 
-	return fmt.Sprintf("0x%s%s", Method_balanceOf, packNumeric(address, 32))
+	return fmt.Sprintf("0x%s%s", Method_balanceOf, address)
 }
 
 // GetDecimals .
@@ -85,6 +85,10 @@ func GetSymbol() string {
 	return fmt.Sprintf("0x%s", Method_symbol)
 }
 
+func GetDescription() string {
+	return fmt.Sprintf("0x%s", Method_description)
+}
+
 func OwnerOf(value string) string {
 	value = packNumeric(strings.TrimPrefix(value, "0x"), 32)
 	data := fmt.Sprintf("%s%s", Method_ownerOf, value)
@@ -93,9 +97,9 @@ func OwnerOf(value string) string {
 }
 
 func TokensOf(address string) string {
-	address = strings.Trim(address, "0x")
+	address = packNumeric(strings.Trim(address, "0x"), 32)
 
-	return fmt.Sprintf("0x%s%s", Method_tokensOf, packNumeric(address, 32))
+	return fmt.Sprintf("0x%s%s", Method_tokensOf, address)
 }
 
 func SetAssetHolder(to string, value string) string {
@@ -143,4 +147,21 @@ func TransferFrom(from, to string, value string) string {
 	value = packNumeric(strings.TrimPrefix(value, "0x"), 32)
 
 	return fmt.Sprintf("%s%s%s%s", Method_transferFrom, from, to, value)
+}
+
+func IsExists(value string) string {
+	value = packNumeric(strings.TrimPrefix(value, "0x"), 32)
+
+	return fmt.Sprintf("%s%s", Method_exists, value)
+}
+
+func TokenOfOwnerByIndex(adress string, value string) string {
+	adress = packNumeric(strings.TrimPrefix(adress, "0x"), 32)
+	value = packNumeric(strings.TrimPrefix(value, "0x"), 32)
+
+	return fmt.Sprintf("%s%s%s", Method_tokenOfOwnerByIndex, adress, value)
+}
+
+func TakeOwnership(value string) string {
+	return fmt.Sprintf("%s%s", Method_takeOwnership, value)
 }
