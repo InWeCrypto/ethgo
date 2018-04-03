@@ -221,14 +221,16 @@ func TestTokensOf(t *testing.T) {
 
 	count := 1
 	for i := 0; i < len(valstr); i += 64 {
-		var tokenId big.Int
+		var landId big.Int
 		value := "0x" + valstr[i:i+64]
-		err := tokenId.UnmarshalJSON([]byte(value))
+		err := landId.UnmarshalJSON([]byte(value))
 		if err != nil {
 			require.NoError(t, err)
 		}
 
-		println("tokenId ", count, " --- ", tokenId.String())
+		if count > 2 {
+			println(count, " landId ", " --- ", landId.String())
+		}
 
 		count++
 	}
@@ -247,17 +249,17 @@ func TestLandOf(t *testing.T) {
 
 	valstr = strings.TrimPrefix(valstr, "0x")
 
-	// 返回两个数组 []int256 []int256 需要解析
+	// return two arrays []int256 []int256 need to handle
 	count := 1
 	for i := 0; i < len(valstr); i += 64 {
-		var tokenId big.Int
+		var coord big.Int
 		value := "0x" + valstr[i:i+64]
-		err := tokenId.UnmarshalJSON([]byte(value))
+		err := coord.UnmarshalJSON([]byte(value))
 		if err != nil {
 			require.NoError(t, err)
 		}
 
-		println("tokenId ", count, " --- ", tokenId.String())
+		println(count, " coord ", " ---- ", coord.String())
 
 		count++
 	}
