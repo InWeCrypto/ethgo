@@ -36,6 +36,7 @@ const (
 	DecentraLand_landData      = "landData(int256,int256)"
 	DecentraLand_landOf        = "landOf(address)"
 	DecentraLand_transferLand  = "transferLand(int,int,address)"
+	DecentraLand_ownerOfLand   = "ownerOfLand(int,int)"
 )
 
 // Method/Event id
@@ -67,6 +68,7 @@ var (
 	Method_DecentraLand_description   = SignABI(DecentraLand_description)
 	Method_DecentraLand_landOf        = SignABI(DecentraLand_landOf)
 	Method_DecentraLand_transferLand  = SignABI(DecentraLand_transferLand)
+	Method_DecentraLand_ownerOfLand   = SignABI(DecentraLand_ownerOfLand)
 )
 
 // SignABI sign abi string
@@ -162,7 +164,7 @@ func TransferLand(to string, x, y string) ([]byte, error) {
 	x = packNumeric(strings.TrimPrefix(x, "0x"), 32)
 	y = packNumeric(strings.TrimPrefix(y, "0x"), 32)
 
-	data := fmt.Sprintf("%s%s%s", Method_DecentraLand_transferLand, x, y, to)
+	data := fmt.Sprintf("%s%s%s%s", Method_DecentraLand_transferLand, x, y, to)
 
 	return hex.DecodeString(data)
 }
@@ -224,4 +226,11 @@ func LandOf(address string) string {
 	address = packNumeric(strings.TrimPrefix(address, "0x"), 32)
 
 	return fmt.Sprintf("0x%s%s", Method_DecentraLand_landOf, address)
+}
+
+func OwnerOfLand(x, y string) string {
+	x = packNumeric(strings.TrimPrefix(x, "0x"), 32)
+	y = packNumeric(strings.TrimPrefix(y, "0x"), 32)
+
+	return fmt.Sprintf("0x%s%s%s", Method_DecentraLand_ownerOfLand, x, y)
 }

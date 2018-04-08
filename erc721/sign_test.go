@@ -217,10 +217,8 @@ func TestTokensOf(t *testing.T) {
 
 	require.NoError(t, err)
 
-	valstr = strings.TrimPrefix(valstr, "0x")
-
 	count := 1
-	for i := 0; i < len(valstr); i += 64 {
+	for i := 130; i < len(valstr); i += 64 {
 		var landId big.Int
 		value := "0x" + valstr[i:i+64]
 		err := landId.UnmarshalJSON([]byte(value))
@@ -249,9 +247,17 @@ func TestLandOf(t *testing.T) {
 
 	println(" valstr len  :", len(valstr))
 
+	var length big.Int
+	err = length.UnmarshalJSON([]byte("0x" + valstr[128:192]))
+	if err != nil {
+		require.NoError(t, err)
+	}
+
+	println(" length  :", length.Int64())
+
 	// return two arrays []int256 []int256 need to handle
 	count := 1
-	for i := 0; i < len(valstr); i += 64 {
+	for i := 192; i < len(valstr); i += 64 {
 		var coord big.Int
 		value := "0x" + valstr[i:i+64]
 		err := coord.UnmarshalJSON([]byte(value))
