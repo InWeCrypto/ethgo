@@ -29,13 +29,13 @@ const (
 	ERC721_transferFrom        = "transferFrom(address,address,uint256)"
 	ERC721_isAuthorized        = "isAuthorized(address,uint256)"
 	ERC721_description         = "description()"
-	ERC721_safeTransferFrom    = "safeTransferFrom(address,address,uint256,bytes)"
 
 	DecentraLand_description   = "description()"
 	DecentraLand_decodeTokenId = "decodeTokenId(uint256)"
 	DecentraLand_encodeTokenId = "encodeTokenId(int256,int256)"
 	DecentraLand_landData      = "landData(int256,int256)"
 	DecentraLand_landOf        = "landOf(address)"
+	DecentraLand_transferLand  = "transferLand(int,int,address)"
 )
 
 // Method/Event id
@@ -66,6 +66,7 @@ var (
 	Method_DecentraLand_landData      = SignABI(DecentraLand_landData)
 	Method_DecentraLand_description   = SignABI(DecentraLand_description)
 	Method_DecentraLand_landOf        = SignABI(DecentraLand_landOf)
+	Method_DecentraLand_transferLand  = SignABI(DecentraLand_transferLand)
 )
 
 // SignABI sign abi string
@@ -114,11 +115,13 @@ func TokensOf(address string) string {
 	return fmt.Sprintf("0x%s%s", Method_tokensOf, address)
 }
 
-func SetAssetHolder(to string, value string) string {
+func SetAssetHolder(to string, value string) ([]byte, error) {
 	to = packNumeric(strings.TrimPrefix(to, "0x"), 32)
 	value = packNumeric(strings.TrimPrefix(value, "0x"), 32)
 
-	return fmt.Sprintf("%s%s%s", Method_setAssetHolder, to, value)
+	data := fmt.Sprintf("%s%s%s", Method_setAssetHolder, to, value)
+
+	return hex.DecodeString(data)
 }
 
 func GetTokenMetadata(value string) string {
@@ -146,19 +149,33 @@ func packNumeric(value string, bytes int) string {
 }
 
 // Transfer .
-func Transfer(to string, value string) string {
+func Transfer(to string, value string) ([]byte, error) {
 	to = packNumeric(strings.TrimPrefix(to, "0x"), 32)
 	value = packNumeric(strings.TrimPrefix(value, "0x"), 32)
 
-	return fmt.Sprintf("%s%s%s", Method_transfer, to, value)
+	data := fmt.Sprintf("%s%s%s", Method_transfer, to, value)
+
+	return hex.DecodeString(data)
 }
 
-func TransferFrom(from, to string, value string) string {
+func TransferLand(to string, x, y string) ([]byte, error) {
+	to = packNumeric(strings.TrimPrefix(to, "0x"), 32)
+	x = packNumeric(strings.TrimPrefix(x, "0x"), 32)
+	y = packNumeric(strings.TrimPrefix(y, "0x"), 32)
+
+	data := fmt.Sprintf("%s%s%s", Method_DecentraLand_transferLand, x, y, to)
+
+	return hex.DecodeString(data)
+}
+
+func TransferFrom(from, to string, value string) ([]byte, error) {
 	from = packNumeric(strings.TrimPrefix(from, "0x"), 32)
 	to = packNumeric(strings.TrimPrefix(to, "0x"), 32)
 	value = packNumeric(strings.TrimPrefix(value, "0x"), 32)
 
-	return fmt.Sprintf("%s%s%s%s", Method_transferFrom, from, to, value)
+	data := fmt.Sprintf("%s%s%s%s", Method_transferFrom, from, to, value)
+
+	return hex.DecodeString(data)
 }
 
 func IsExists(value string) string {
@@ -174,8 +191,10 @@ func TokenOfOwnerByIndex(adress string, value string) string {
 	return fmt.Sprintf("0x%s%s%s", Method_tokenOfOwnerByIndex, adress, value)
 }
 
-func TakeOwnership(value string) string {
-	return fmt.Sprintf("%s%s", Method_takeOwnership, value)
+func TakeOwnership(value string) ([]byte, error) {
+	data := fmt.Sprintf("%s%s", Method_takeOwnership, value)
+
+	return hex.DecodeString(data)
 }
 
 func DecodeTokenId(value string) string {

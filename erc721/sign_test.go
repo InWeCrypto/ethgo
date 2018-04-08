@@ -271,7 +271,9 @@ func TestSetAssetHolder(t *testing.T) {
 	// rand  a num
 	value := hex.EncodeToString(big.NewInt(111).Bytes())
 
-	data := SetAssetHolder(key.Address, value)
+	data, err := SetAssetHolder(key.Address, value)
+
+	require.NoError(t, err)
 
 	gasLimits := big.NewInt(300000)
 	gasPrice := ethgo.NewValue(big.NewFloat(20), ethgo.Shannon)
@@ -279,11 +281,7 @@ func TestSetAssetHolder(t *testing.T) {
 
 	require.NoError(t, err)
 
-	decodeData, err := hex.DecodeString(data)
-
-	require.NoError(t, err)
-
-	tx := tx.NewTx(nonce, contractAddress, nil, gasPrice, gasLimits, decodeData)
+	tx := tx.NewTx(nonce, contractAddress, nil, gasPrice, gasLimits, data)
 
 	require.NoError(t, tx.Sign(key.PrivateKey))
 
@@ -374,7 +372,9 @@ func TestTransferFrom(t *testing.T) {
 
 	value := hex.EncodeToString(big.NewInt(3).Bytes())
 
-	data := TransferFrom(key.Address, "0xcecbe670c11d4d28678955f23e0d2d708d79c893", value)
+	data, err := TransferFrom(key.Address, "0xcecbe670c11d4d28678955f23e0d2d708d79c893", value)
+
+	require.NoError(t, err)
 
 	gasLimits := big.NewInt(300000)
 	gasPrice := ethgo.NewValue(big.NewFloat(20), ethgo.Shannon)
@@ -382,11 +382,7 @@ func TestTransferFrom(t *testing.T) {
 
 	require.NoError(t, err)
 
-	decodeData, err := hex.DecodeString(data)
-
-	require.NoError(t, err)
-
-	tx := tx.NewTx(nonce, contractAddress, nil, gasPrice, gasLimits, decodeData)
+	tx := tx.NewTx(nonce, contractAddress, nil, gasPrice, gasLimits, data)
 
 	require.NoError(t, tx.Sign(key.PrivateKey))
 
