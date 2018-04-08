@@ -104,9 +104,7 @@ func GetDescription() string {
 
 func OwnerOf(value string) string {
 	value = packNumeric(strings.TrimPrefix(value, "0x"), 32)
-	data := fmt.Sprintf("0x%s%s", Method_ownerOf, value)
-
-	return data
+	return fmt.Sprintf("0x%s%s", Method_ownerOf, value)
 }
 
 func TokensOf(address string) string {
