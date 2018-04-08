@@ -228,9 +228,7 @@ func TestTokensOf(t *testing.T) {
 			require.NoError(t, err)
 		}
 
-		if count > 2 {
-			println(count, " landId ", " --- ", landId.String())
-		}
+		println(count, " landId ", " --- ", landId.String())
 
 		count++
 	}
@@ -248,6 +246,8 @@ func TestLandOf(t *testing.T) {
 	require.NoError(t, err)
 
 	valstr = strings.TrimPrefix(valstr, "0x")
+
+	println(" valstr len  :", len(valstr))
 
 	// return two arrays []int256 []int256 need to handle
 	count := 1

@@ -9,20 +9,22 @@ import (
 )
 
 const (
-	signBalanceOf   = "balanceOf(address)"
-	signTotalSupply = "totalSupply()"
-	signTransfer    = "transfer(address,uint256)"
-	eventTransfer   = "Transfer(address,address,uint256)"
-	initWallet      = "initWallet(address[],uint256,uint256)"
-	decimals        = "decimals()"
+	signBalanceOf    = "balanceOf(address)"
+	signTotalSupply  = "totalSupply()"
+	signTransfer     = "transfer(address,uint256)"
+	eventTransfer    = "Transfer(address,address,uint256)"
+	initWallet       = "initWallet(address[],uint256,uint256)"
+	decimals         = "decimals()"
+	signTransferFrom = "transferFrom(address,address,uint256)"
 )
 
 // Method/Event id
 var (
-	TransferID   = SignABI(signTransfer)
-	BalanceOfID  = SignABI(signBalanceOf)
-	InitWalletID = SignABI(initWallet)
-	Decimals     = SignABI(decimals)
+	TransferID     = SignABI(signTransfer)
+	BalanceOfID    = SignABI(signBalanceOf)
+	InitWalletID   = SignABI(initWallet)
+	Decimals       = SignABI(decimals)
+	TransferFromID = SignABI(signTransferFrom)
 )
 
 // SignABI sign abi string
@@ -64,7 +66,17 @@ func Transfer(to string, value string) ([]byte, error) {
 	value = packNumeric(strings.TrimPrefix(value, "0x"), 32)
 
 	data := fmt.Sprintf("%s%s%s", SignABI(signTransfer), to, value)
-	println(data)
+
+	return hex.DecodeString(data)
+}
+
+// TransferFrom .
+func TransferFrom(from, to string, value string) ([]byte, error) {
+	from = packNumeric(strings.TrimPrefix(from, "0x"), 32)
+	to = packNumeric(strings.TrimPrefix(to, "0x"), 32)
+	value = packNumeric(strings.TrimPrefix(value, "0x"), 32)
+
+	data := fmt.Sprintf("%s%s%s%s", TransferFromID, from, to, value)
 
 	return hex.DecodeString(data)
 }
