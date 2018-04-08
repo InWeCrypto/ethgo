@@ -129,11 +129,12 @@ func GetTokenMetadata(value string) string {
 	return fmt.Sprintf("0x%s%s", Method_tokenMetadata, value)
 }
 
-func Approve(to string, value string) string {
+func Approve(to string, value string) ([]byte, error) {
 	to = packNumeric(strings.TrimPrefix(to, "0x"), 32)
 	value = packNumeric(strings.TrimPrefix(value, "0x"), 32)
 
-	return fmt.Sprintf("0x%s%s%s", Method_approve, to, value)
+	data := fmt.Sprintf("%s%s%s", Method_approve, to, value)
+	return hex.DecodeString(data)
 }
 
 func packNumeric(value string, bytes int) string {
