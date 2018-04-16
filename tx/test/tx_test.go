@@ -21,7 +21,7 @@ import (
 var key *keystore.Key
 
 func init() {
-	rawdata, err := ioutil.ReadFile("../../../conf/tnc.json")
+	rawdata, err := ioutil.ReadFile("../../../conf/test2.json")
 
 	if err != nil {
 		panic(err)
@@ -45,13 +45,13 @@ func TestTokenTransfer(t *testing.T) {
 
 	println(key.Address)
 
-	deciamls, err := client.GetTokenDecimals("0x9b7929b142dddc08b889c146340c872cf8d6de71")
+	deciamls, err := client.GetTokenDecimals("0x6bf8c045ac5cc022568545997db24c946794c0c2")
 
 	require.NoError(t, err)
 
 	println("deciamls :", deciamls.Int64())
 
-	balance, err := client.GetTokenBalance("0x9b7929b142dddc08b889c146340c872cf8d6de71", key.Address)
+	balance, err := client.GetTokenBalance("0x6bf8c045ac5cc022568545997db24c946794c0c2", key.Address)
 
 	require.NoError(t, err)
 
@@ -73,7 +73,7 @@ func TestTokenTransfer(t *testing.T) {
 
 	require.NoError(t, err)
 
-	tx := tx.NewTx(nonce, "0x9b7929b142dddc08b889c146340c872cf8d6de71", nil, gasPrice, gasLimits, codes)
+	tx := tx.NewTx(nonce, "0x6bf8c045ac5cc022568545997db24c946794c0c2", nil, gasPrice, gasLimits, codes)
 
 	require.NoError(t, tx.Sign(key.PrivateKey))
 
