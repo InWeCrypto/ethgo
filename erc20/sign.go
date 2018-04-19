@@ -51,7 +51,7 @@ func GetDecimals() string {
 }
 
 func packNumeric(value string, bytes int) string {
-	value = strings.TrimSuffix(value, "0x")
+	value = strings.TrimPrefix(value, "0x")
 
 	chars := bytes * 2
 
@@ -64,8 +64,8 @@ func packNumeric(value string, bytes int) string {
 
 // Transfer .
 func Transfer(to string, value string) ([]byte, error) {
-	to = packNumeric(strings.TrimPrefix(to, "0x"), 32)
-	value = packNumeric(strings.TrimPrefix(value, "0x"), 32)
+	to = packNumeric(to, 32)
+	value = packNumeric(value, 32)
 
 	data := fmt.Sprintf("%s%s%s", SignABI(signTransfer), to, value)
 
@@ -74,9 +74,9 @@ func Transfer(to string, value string) ([]byte, error) {
 
 // TransferFrom .
 func TransferFrom(from, to string, value string) ([]byte, error) {
-	from = packNumeric(strings.TrimPrefix(from, "0x"), 32)
-	to = packNumeric(strings.TrimPrefix(to, "0x"), 32)
-	value = packNumeric(strings.TrimPrefix(value, "0x"), 32)
+	from = packNumeric(from, 32)
+	to = packNumeric(to, 32)
+	value = packNumeric(value, 32)
 
 	data := fmt.Sprintf("%s%s%s%s", TransferFromID, from, to, value)
 
@@ -85,8 +85,8 @@ func TransferFrom(from, to string, value string) ([]byte, error) {
 
 // TransferFrom .
 func Approve(to string, value string) ([]byte, error) {
-	to = packNumeric(strings.TrimPrefix(to, "0x"), 32)
-	value = packNumeric(strings.TrimPrefix(value, "0x"), 32)
+	to = packNumeric(to, 32)
+	value = packNumeric(value, 32)
 
 	data := fmt.Sprintf("%s%s%s", ApproveID, to, value)
 

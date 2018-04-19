@@ -82,7 +82,7 @@ func SignABI(abi string) string {
 
 // BalanceOf create erc20 balanceof abi string
 func BalanceOf(address string) string {
-	address = packNumeric(strings.Trim(address, "0x"), 32)
+	address = packNumeric(address, 32)
 
 	return fmt.Sprintf("0x%s%s", Method_balanceOf, address)
 }
@@ -105,19 +105,19 @@ func GetDescription() string {
 }
 
 func OwnerOf(value string) string {
-	value = packNumeric(strings.TrimPrefix(value, "0x"), 32)
+	value = packNumeric(value, 32)
 	return fmt.Sprintf("0x%s%s", Method_ownerOf, value)
 }
 
 func TokensOf(address string) string {
-	address = packNumeric(strings.Trim(address, "0x"), 32)
+	address = packNumeric(address, 32)
 
 	return fmt.Sprintf("0x%s%s", Method_tokensOf, address)
 }
 
 func SetAssetHolder(to string, value string) ([]byte, error) {
-	to = packNumeric(strings.TrimPrefix(to, "0x"), 32)
-	value = packNumeric(strings.TrimPrefix(value, "0x"), 32)
+	to = packNumeric(to, 32)
+	value = packNumeric(value, 32)
 
 	data := fmt.Sprintf("%s%s%s", Method_setAssetHolder, to, value)
 
@@ -125,20 +125,20 @@ func SetAssetHolder(to string, value string) ([]byte, error) {
 }
 
 func GetTokenMetadata(value string) string {
-	value = packNumeric(strings.TrimPrefix(value, "0x"), 32)
+	value = packNumeric(value, 32)
 	return fmt.Sprintf("0x%s%s", Method_tokenMetadata, value)
 }
 
 func Approve(to string, value string) ([]byte, error) {
-	to = packNumeric(strings.TrimPrefix(to, "0x"), 32)
-	value = packNumeric(strings.TrimPrefix(value, "0x"), 32)
+	to = packNumeric(to, 32)
+	value = packNumeric(value, 32)
 
 	data := fmt.Sprintf("%s%s%s", Method_approve, to, value)
 	return hex.DecodeString(data)
 }
 
 func packNumeric(value string, bytes int) string {
-	value = strings.TrimSuffix(value, "0x")
+	value = strings.TrimPrefix(value, "0x")
 
 	chars := bytes * 2
 
@@ -151,8 +151,8 @@ func packNumeric(value string, bytes int) string {
 
 // Transfer .
 func Transfer(to string, value string) ([]byte, error) {
-	to = packNumeric(strings.TrimPrefix(to, "0x"), 32)
-	value = packNumeric(strings.TrimPrefix(value, "0x"), 32)
+	to = packNumeric(to, 32)
+	value = packNumeric(value, 32)
 
 	data := fmt.Sprintf("%s%s%s", Method_transfer, to, value)
 
@@ -160,9 +160,9 @@ func Transfer(to string, value string) ([]byte, error) {
 }
 
 func TransferLand(to string, x, y string) ([]byte, error) {
-	to = packNumeric(strings.TrimPrefix(to, "0x"), 32)
-	x = packNumeric(strings.TrimPrefix(x, "0x"), 32)
-	y = packNumeric(strings.TrimPrefix(y, "0x"), 32)
+	to = packNumeric(to, 32)
+	x = packNumeric(x, 32)
+	y = packNumeric(y, 32)
 
 	data := fmt.Sprintf("%s%s%s%s", Method_DecentraLand_transferLand, x, y, to)
 
@@ -170,9 +170,9 @@ func TransferLand(to string, x, y string) ([]byte, error) {
 }
 
 func TransferFrom(from, to string, value string) ([]byte, error) {
-	from = packNumeric(strings.TrimPrefix(from, "0x"), 32)
-	to = packNumeric(strings.TrimPrefix(to, "0x"), 32)
-	value = packNumeric(strings.TrimPrefix(value, "0x"), 32)
+	from = packNumeric(from, 32)
+	to = packNumeric(to, 32)
+	value = packNumeric(value, 32)
 
 	data := fmt.Sprintf("%s%s%s%s", Method_transferFrom, from, to, value)
 
@@ -180,14 +180,14 @@ func TransferFrom(from, to string, value string) ([]byte, error) {
 }
 
 func IsExists(value string) string {
-	value = packNumeric(strings.TrimPrefix(value, "0x"), 32)
+	value = packNumeric(value, 32)
 
 	return fmt.Sprintf("0x%s%s", Method_exists, value)
 }
 
 func TokenOfOwnerByIndex(adress string, value string) string {
-	adress = packNumeric(strings.TrimPrefix(adress, "0x"), 32)
-	value = packNumeric(strings.TrimPrefix(value, "0x"), 32)
+	adress = packNumeric(adress, 32)
+	value = packNumeric(value, 32)
 
 	return fmt.Sprintf("0x%s%s%s", Method_tokenOfOwnerByIndex, adress, value)
 }
@@ -199,21 +199,21 @@ func TakeOwnership(value string) ([]byte, error) {
 }
 
 func DecodeTokenId(value string) string {
-	value = packNumeric(strings.TrimPrefix(value, "0x"), 32)
+	value = packNumeric(value, 32)
 
 	return fmt.Sprintf("0x%s%s", Method_DecentraLand_decodeTokenId, value)
 }
 
 func EncodeTokenId(x, y string) string {
-	x = packNumeric(strings.TrimPrefix(x, "0x"), 32)
-	y = packNumeric(strings.TrimPrefix(y, "0x"), 32)
+	x = packNumeric(x, 32)
+	y = packNumeric(y, 32)
 
 	return fmt.Sprintf("0x%s%s%s", Method_DecentraLand_encodeTokenId, x, y)
 }
 
 func LandData(x, y string) string {
-	x = packNumeric(strings.TrimPrefix(x, "0x"), 32)
-	y = packNumeric(strings.TrimPrefix(y, "0x"), 32)
+	x = packNumeric(x, 32)
+	y = packNumeric(y, 32)
 
 	return fmt.Sprintf("0x%s%s%s", Method_DecentraLand_landData, x, y)
 }
@@ -223,14 +223,14 @@ func Description() string {
 }
 
 func LandOf(address string) string {
-	address = packNumeric(strings.TrimPrefix(address, "0x"), 32)
+	address = packNumeric(address, 32)
 
 	return fmt.Sprintf("0x%s%s", Method_DecentraLand_landOf, address)
 }
 
 func OwnerOfLand(x, y string) string {
-	x = packNumeric(strings.TrimPrefix(x, "0x"), 32)
-	y = packNumeric(strings.TrimPrefix(y, "0x"), 32)
+	x = packNumeric(x, 32)
+	y = packNumeric(y, 32)
 
 	return fmt.Sprintf("0x%s%s%s", Method_DecentraLand_ownerOfLand, x, y)
 }

@@ -197,6 +197,35 @@ func (client *Client) GetTokenDecimals(token string) (val *big.Int, err error) {
 	return ReadBigint(valstr)
 }
 
+func (client *Client) SuggestGasPrice() (*big.Int, error) {
+	var val string
+
+	err := client.call("eth_gasPrice", &val, "latest")
+	if err != nil {
+		return nil, err
+	}
+
+	return ReadBigint(val)
+}
+
+func (client *Client) EstimateGas(from, to, value, data string) (*big.Int, error) {
+	var val string
+
+	site := &CallSite{
+		From:  from,
+		To:    to,
+		Value: value,
+		Data:  data,
+	}
+
+	err := client.call("eth_estimateGas", &val, site)
+	if err != nil {
+		return nil, err
+	}
+
+	return ReadBigint(val)
+}
+
 // ReadBigint .
 func ReadBigint(source string) (*big.Int, error) {
 	value := big.NewInt(0)
