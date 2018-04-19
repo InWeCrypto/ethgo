@@ -16,6 +16,7 @@ const (
 	initWallet       = "initWallet(address[],uint256,uint256)"
 	decimals         = "decimals()"
 	signTransferFrom = "transferFrom(address,address,uint256)"
+	signApprove      = "approve(address,uint256)"
 )
 
 // Method/Event id
@@ -25,6 +26,7 @@ var (
 	InitWalletID   = SignABI(initWallet)
 	Decimals       = SignABI(decimals)
 	TransferFromID = SignABI(signTransferFrom)
+	ApproveID      = SignABI(signApprove)
 )
 
 // SignABI sign abi string
@@ -77,6 +79,16 @@ func TransferFrom(from, to string, value string) ([]byte, error) {
 	value = packNumeric(strings.TrimPrefix(value, "0x"), 32)
 
 	data := fmt.Sprintf("%s%s%s%s", TransferFromID, from, to, value)
+
+	return hex.DecodeString(data)
+}
+
+// TransferFrom .
+func Approve(to string, value string) ([]byte, error) {
+	to = packNumeric(strings.TrimPrefix(to, "0x"), 32)
+	value = packNumeric(strings.TrimPrefix(value, "0x"), 32)
+
+	data := fmt.Sprintf("%s%s%s", ApproveID, to, value)
 
 	return hex.DecodeString(data)
 }
