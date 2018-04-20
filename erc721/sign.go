@@ -3,6 +3,7 @@ package erc721
 import (
 	"encoding/hex"
 	"fmt"
+	"math/big"
 	"strings"
 
 	"github.com/inwecrypto/sha3"
@@ -37,6 +38,17 @@ const (
 	DecentraLand_landOf        = "landOf(address)"
 	DecentraLand_transferLand  = "transferLand(int,int,address)"
 	DecentraLand_ownerOfLand   = "ownerOfLand(int,int)"
+
+	RedPacket_setTaxCost         = "setTaxCost(uint256)"
+	RedPacket_changeWallet       = "changeWallet(address)"
+	RedPacket_changeMaxCount     = "changeMaxCount(uint256)"
+	RedPacket_getUserTokens      = "getUserTokens(address)"
+	RedPacket_getRedPacketDetail = "getRedPacketDetail(uint256)"
+	RedPacket_newRedPacket       = "newRedPacket(address,uint256,uint256,uint256)"
+	RedPacket_open               = "open(uint256,address,uint256)"
+	RedPacket_openMany           = "openMany(uint256,address[],uint256)"
+	RedPacket_takeBack           = "takeBack(uint256)"
+	RedPacket_sendEther          = "sendEther(uint256)"
 )
 
 // Method/Event id
@@ -233,4 +245,95 @@ func OwnerOfLand(x, y string) string {
 	y = packNumeric(y, 32)
 
 	return fmt.Sprintf("0x%s%s%s", Method_DecentraLand_ownerOfLand, x, y)
+}
+
+func SetTaxCost(value string) ([]byte, error) {
+	data := SignABI(RedPacket_setTaxCost) + packNumeric(value, 32)
+
+	return hex.DecodeString(data)
+}
+
+func ChangeWallet(address string) ([]byte, error) {
+	data := SignABI(RedPacket_changeWallet) + packNumeric(address, 32)
+
+	return hex.DecodeString(data)
+}
+
+func ChangeMaxCount(value string) ([]byte, error) {
+	data := SignABI(RedPacket_changeMaxCount) + packNumeric(value, 32)
+
+	return hex.DecodeString(data)
+}
+
+func GetUserTokens(address string) ([]byte, error) {
+	data := SignABI(RedPacket_getUserTokens) + packNumeric(address, 32)
+
+	return hex.DecodeString(data)
+}
+
+func GetRedPacketDetail(value string) ([]byte, error) {
+	data := SignABI(RedPacket_getRedPacketDetail) + packNumeric(value, 32)
+
+	return hex.DecodeString(data)
+}
+
+func NewRedPacket(address string, value, count, cmd string) ([]byte, error) {
+	data := SignABI(RedPacket_newRedPacket) +
+		packNumeric(address, 32) +
+		packNumeric(value, 32) +
+		packNumeric(count, 32) +
+		packNumeric(cmd, 32)
+
+	return hex.DecodeString(data)
+}
+
+func Open(tokeId, address string, cmd string) ([]byte, error) {
+
+	data := SignABI(RedPacket_open) +
+		packNumeric(tokeId, 32) +
+		packNumeric(address, 32) +
+		packNumeric(cmd, 32)
+
+	return hex.DecodeString(data)
+}
+
+func OpenMany(tokeId string, addresses []string, cmd string) ([]byte, error) {
+
+	start := hex.EncodeToString(big.NewInt(96).Bytes())
+
+	data := SignABI(RedPacket_openMany) +
+		packNumeric(tokeId, 32) +
+		packNumeric(start, 32) +
+		packNumeric(cmd, 32) +
+		encodeStrings(addresses)
+
+	return hex.DecodeString(data)
+}
+
+func TakeBack(tokeId string) ([]byte, error) {
+	data := SignABI(RedPacket_takeBack) + packNumeric(tokeId, 32)
+
+	return hex.DecodeString(data)
+}
+
+func SendEther(value string) ([]byte, error) {
+	value = packNumeric(value, 32)
+
+	data := SignABI(RedPacket_sendEther) + value
+
+	return hex.DecodeString(data)
+}
+
+func encodeStrings(params []string) string {
+	length := big.NewInt(int64(len(params)))
+
+	lenStr := hex.EncodeToString(length.Bytes())
+
+	codes := packNumeric(lenStr, 64)
+
+	for _, v := range params {
+		codes += packNumeric(v, 32)
+	}
+
+	return codes
 }
