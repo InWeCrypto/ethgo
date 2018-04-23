@@ -310,7 +310,7 @@ func encodeStrings(params []string) string {
 
 	lenStr := hex.EncodeToString(length.Bytes())
 
-	codes := packNumeric(lenStr, 64)
+	codes := packNumeric(lenStr, 32)
 
 	for _, v := range params {
 		codes += packNumeric(v, 32)
