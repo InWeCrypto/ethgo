@@ -43,9 +43,10 @@ const (
 	RedPacket_changeWallet       = "changeWallet(address)"
 	RedPacket_changeMaxCount     = "changeMaxCount(uint256)"
 	RedPacket_getRedPacketDetail = "getRedPacketDetail(uint256)"
-	RedPacket_newRedPacket       = "newRedPacket(address,uint256,uint256)"
+	RedPacket_newRedPacket       = "newRedPacket(address,address,uint256,uint256)"
 	RedPacket_openRedPacket      = "openRedPacket(uint256,address[])"
 	RedPacket_sendEther          = "sendEther(uint256)"
+	RedPacket_taxCost            = "taxCost()"
 )
 
 // Method/Event id
@@ -244,6 +245,12 @@ func OwnerOfLand(x, y string) string {
 	return fmt.Sprintf("0x%s%s%s", Method_DecentraLand_ownerOfLand, x, y)
 }
 
+func TaxCost() ([]byte, error) {
+	data := SignABI(RedPacket_taxCost)
+
+	return hex.DecodeString(data)
+}
+
 func SetTaxCost(value string) ([]byte, error) {
 	data := SignABI(RedPacket_setTaxCost) + packNumeric(value, 32)
 
@@ -268,9 +275,10 @@ func GetRedPacketDetail(value string) ([]byte, error) {
 	return hex.DecodeString(data)
 }
 
-func NewRedPacket(address, value, count string) ([]byte, error) {
+func NewRedPacket(address, from, value, count string) ([]byte, error) {
 	data := SignABI(RedPacket_newRedPacket) +
 		packNumeric(address, 32) +
+		packNumeric(from, 32) +
 		packNumeric(value, 32) +
 		packNumeric(count, 32)
 
