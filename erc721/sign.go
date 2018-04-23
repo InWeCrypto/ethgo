@@ -42,7 +42,6 @@ const (
 	RedPacket_setTaxCost         = "setTaxCost(uint256)"
 	RedPacket_changeWallet       = "changeWallet(address)"
 	RedPacket_changeMaxCount     = "changeMaxCount(uint256)"
-	RedPacket_getUserTokens      = "getUserTokens(address)"
 	RedPacket_getRedPacketDetail = "getRedPacketDetail(uint256)"
 	RedPacket_newRedPacket       = "newRedPacket(address,uint256,uint256)"
 	RedPacket_openRedPacket      = "openRedPacket(uint256,address[])"
@@ -259,12 +258,6 @@ func ChangeWallet(address string) ([]byte, error) {
 
 func ChangeMaxCount(value string) ([]byte, error) {
 	data := SignABI(RedPacket_changeMaxCount) + packNumeric(value, 32)
-
-	return hex.DecodeString(data)
-}
-
-func GetUserTokens(address string) ([]byte, error) {
-	data := SignABI(RedPacket_getUserTokens) + packNumeric(address, 32)
 
 	return hex.DecodeString(data)
 }
