@@ -83,7 +83,7 @@ func TransferFrom(from, to string, value string) ([]byte, error) {
 	return hex.DecodeString(data)
 }
 
-// TransferFrom .
+// Approve .
 func Approve(to string, value string) ([]byte, error) {
 	to = packNumeric(to, 32)
 	value = packNumeric(value, 32)

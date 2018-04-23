@@ -44,10 +44,8 @@ const (
 	RedPacket_changeMaxCount     = "changeMaxCount(uint256)"
 	RedPacket_getUserTokens      = "getUserTokens(address)"
 	RedPacket_getRedPacketDetail = "getRedPacketDetail(uint256)"
-	RedPacket_newRedPacket       = "newRedPacket(address,uint256,uint256,uint256)"
-	RedPacket_open               = "open(uint256,address,uint256)"
-	RedPacket_openMany           = "openMany(uint256,address[],uint256)"
-	RedPacket_takeBack           = "takeBack(uint256)"
+	RedPacket_newRedPacket       = "newRedPacket(address,uint256,uint256)"
+	RedPacket_openRedPacket      = "openRedPacket(uint256,address[])"
 	RedPacket_sendEther          = "sendEther(uint256)"
 )
 
@@ -277,41 +275,23 @@ func GetRedPacketDetail(value string) ([]byte, error) {
 	return hex.DecodeString(data)
 }
 
-func NewRedPacket(address string, value, count, cmd string) ([]byte, error) {
+func NewRedPacket(address, value, count string) ([]byte, error) {
 	data := SignABI(RedPacket_newRedPacket) +
 		packNumeric(address, 32) +
 		packNumeric(value, 32) +
-		packNumeric(count, 32) +
-		packNumeric(cmd, 32)
+		packNumeric(count, 32)
 
 	return hex.DecodeString(data)
 }
 
-func Open(tokeId, address string, cmd string) ([]byte, error) {
+func OpenRedPacket(tokeId string, addresses []string) ([]byte, error) {
 
-	data := SignABI(RedPacket_open) +
-		packNumeric(tokeId, 32) +
-		packNumeric(address, 32) +
-		packNumeric(cmd, 32)
+	start := hex.EncodeToString(big.NewInt(64).Bytes())
 
-	return hex.DecodeString(data)
-}
-
-func OpenMany(tokeId string, addresses []string, cmd string) ([]byte, error) {
-
-	start := hex.EncodeToString(big.NewInt(96).Bytes())
-
-	data := SignABI(RedPacket_openMany) +
+	data := SignABI(RedPacket_openRedPacket) +
 		packNumeric(tokeId, 32) +
 		packNumeric(start, 32) +
-		packNumeric(cmd, 32) +
 		encodeStrings(addresses)
-
-	return hex.DecodeString(data)
-}
-
-func TakeBack(tokeId string) ([]byte, error) {
-	data := SignABI(RedPacket_takeBack) + packNumeric(tokeId, 32)
 
 	return hex.DecodeString(data)
 }
