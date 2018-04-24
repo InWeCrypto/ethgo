@@ -39,12 +39,14 @@ const (
 	DecentraLand_transferLand  = "transferLand(int,int,address)"
 	DecentraLand_ownerOfLand   = "ownerOfLand(int,int)"
 
+	RedPacket_newRedPacket       = "newRedPacket(address,address,uint256,uint256,uint256)"
+	RedPacket_open               = "open(uint256,address,uint256)"
+	RedPacket_openMany           = "openMany(uint256,address[],uint256)"
+	RedPacket_takeBack           = "takeBack(uint256)"
 	RedPacket_setTaxCost         = "setTaxCost(uint256)"
 	RedPacket_changeWallet       = "changeWallet(address)"
 	RedPacket_changeMaxCount     = "changeMaxCount(uint256)"
 	RedPacket_getRedPacketDetail = "getRedPacketDetail(uint256)"
-	RedPacket_newRedPacket       = "newRedPacket(address,address,uint256,uint256)"
-	RedPacket_openRedPacket      = "openRedPacket(uint256,address[])"
 	RedPacket_sendEther          = "sendEther(uint256)"
 	RedPacket_taxCost            = "taxCost()"
 )
@@ -275,23 +277,36 @@ func GetRedPacketDetail(value string) ([]byte, error) {
 	return hex.DecodeString(data)
 }
 
-func NewRedPacket(address, from, value, count string) ([]byte, error) {
+func NewRedPacket(address, from string, value, count, cmd string) ([]byte, error) {
+
 	data := SignABI(RedPacket_newRedPacket) +
 		packNumeric(address, 32) +
 		packNumeric(from, 32) +
 		packNumeric(value, 32) +
-		packNumeric(count, 32)
+		packNumeric(count, 32) +
+		packNumeric(cmd, 32)
 
 	return hex.DecodeString(data)
 }
 
-func OpenRedPacket(tokeId string, addresses []string) ([]byte, error) {
+func Open(tokeId, address string, cmd string) ([]byte, error) {
 
-	start := hex.EncodeToString(big.NewInt(64).Bytes())
+	data := SignABI(RedPacket_open) +
+		packNumeric(tokeId, 32) +
+		packNumeric(address, 32) +
+		packNumeric(cmd, 32)
 
-	data := SignABI(RedPacket_openRedPacket) +
+	return hex.DecodeString(data)
+}
+
+func OpenMany(tokeId string, addresses []string, cmd string) ([]byte, error) {
+
+	start := hex.EncodeToString(big.NewInt(96).Bytes())
+
+	data := SignABI(RedPacket_openMany) +
 		packNumeric(tokeId, 32) +
 		packNumeric(start, 32) +
+		packNumeric(cmd, 32) +
 		encodeStrings(addresses)
 
 	return hex.DecodeString(data)
@@ -305,12 +320,18 @@ func SendEther(value string) ([]byte, error) {
 	return hex.DecodeString(data)
 }
 
+func TakeBack(tokeId string) ([]byte, error) {
+	data := SignABI(RedPacket_takeBack) + packNumeric(tokeId, 32)
+
+	return hex.DecodeString(data)
+}
+
 func encodeStrings(params []string) string {
 	length := big.NewInt(int64(len(params)))
 
 	lenStr := hex.EncodeToString(length.Bytes())
 
-	codes := packNumeric(lenStr, 32)
+	codes := packNumeric(lenStr, 64)
 
 	for _, v := range params {
 		codes += packNumeric(v, 32)
