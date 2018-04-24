@@ -31,7 +31,6 @@ const (
 	ERC721_isAuthorized        = "isAuthorized(address,uint256)"
 	ERC721_description         = "description()"
 
-	DecentraLand_description   = "description()"
 	DecentraLand_decodeTokenId = "decodeTokenId(uint256)"
 	DecentraLand_encodeTokenId = "encodeTokenId(int256,int256)"
 	DecentraLand_landData      = "landData(int256,int256)"
@@ -77,7 +76,6 @@ var (
 	Method_DecentraLand_decodeTokenId = SignABI(DecentraLand_decodeTokenId)
 	Method_DecentraLand_encodeTokenId = SignABI(DecentraLand_encodeTokenId)
 	Method_DecentraLand_landData      = SignABI(DecentraLand_landData)
-	Method_DecentraLand_description   = SignABI(DecentraLand_description)
 	Method_DecentraLand_landOf        = SignABI(DecentraLand_landOf)
 	Method_DecentraLand_transferLand  = SignABI(DecentraLand_transferLand)
 	Method_DecentraLand_ownerOfLand   = SignABI(DecentraLand_ownerOfLand)
@@ -231,7 +229,7 @@ func LandData(x, y string) string {
 }
 
 func Description() string {
-	return fmt.Sprintf("0x%s", Method_DecentraLand_description)
+	return fmt.Sprintf("0x%s", Method_description)
 }
 
 func LandOf(address string) string {
