@@ -176,10 +176,9 @@ func OwnerOfLand(x, y string) string {
 	return fmt.Sprintf("0x%s%s%s", SignABI(DecentraLand_ownerOfLand), x, y)
 }
 
-func TaxCost() ([]byte, error) {
-	data := SignABI(RedPacket_taxCost)
+func TaxCost() string {
 
-	return hex.DecodeString(data)
+	return "0x" + SignABI(RedPacket_taxCost)
 }
 
 func SetTaxCost(value string) ([]byte, error) {
@@ -200,10 +199,10 @@ func ChangeMaxCount(value string) ([]byte, error) {
 	return hex.DecodeString(data)
 }
 
-func GetRedPacketDetail(value string) ([]byte, error) {
-	data := SignABI(RedPacket_getRedPacketDetail) + packNumeric(value, 32)
+func GetRedPacketDetail(value string) string {
+	data := "0x" + SignABI(RedPacket_getRedPacketDetail) + packNumeric(value, 32)
 
-	return hex.DecodeString(data)
+	return data
 }
 
 func NewRedPacket(address, from string, value, count, cmd string) ([]byte, error) {
