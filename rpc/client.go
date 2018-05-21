@@ -165,6 +165,14 @@ func (client *Client) SendRawTransaction(tx []byte) (val string, err error) {
 	return
 }
 
+// GetTransactionReceipt ...
+func (client *Client) GetTransactionReceipt(tx string) (val *TransactionReceipt, err error) {
+
+	err = client.call("eth_getTransactionReceipt", &val, tx)
+
+	return
+}
+
 // GetTokenBalance .
 func (client *Client) GetTokenBalance(token string, address string) (val *big.Int, err error) {
 	data := erc20.BalanceOf(address)

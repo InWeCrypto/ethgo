@@ -14,7 +14,7 @@ var client *Client
 
 func init() {
 	cnf, _ = config.NewFromFile("../../conf/test.json")
-	client = NewClient(cnf.GetString("ethmainnet", "http://xxxxxxx:8545"))
+	client = NewClient(cnf.GetString("ethtestnet", "http://xxxxxxx:8545"))
 }
 
 func TestBalance(t *testing.T) {
@@ -55,7 +55,16 @@ func TestGetBlockByNumber(t *testing.T) {
 
 func TestGetTransactionByHash(t *testing.T) {
 
-	tx, err := client.GetTransactionByHash("0xa28142d727fe9c0f86d26023cc26f3a80c89d3860c36fb98d66ce5a0bd7a706d")
+	tx, err := client.GetTransactionByHash("0x73098500f6dcb8a42a7b7b56f095e4b17833b969c9bed25693381c6035c186ae")
+
+	assert.NoError(t, err)
+
+	printResult(tx)
+}
+
+func TestGetTransactionReceipt(t *testing.T) {
+
+	tx, err := client.GetTransactionReceipt("0x73098500f6dcb8a42a7b7b56f095e4b17833b969c9bed25693381c6035c186ae")
 
 	assert.NoError(t, err)
 

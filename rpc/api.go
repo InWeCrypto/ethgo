@@ -38,6 +38,20 @@ type Transaction struct {
 	Input            string `json:"input"`
 }
 
+// TransactionReceipt .
+type TransactionReceipt struct {
+	Hash              string        `json:"transactionHash"`
+	BlockHash         string        `json:"blockHash"`
+	BlockNumber       string        `json:"blockNumber"`
+	TransactionIndex  string        `json:"transactionIndex"`
+	CumulativeGasUsed string        `json:"cumulativeGasUsed"`
+	GasUsed           string        `json:"gasUsed"`
+	ContractAddress   string        `json:"contractAddress"`
+	Logs              []interface{} `json:"logs"`
+	LogsBloom         string        `json:"logsBloom"`
+	Status            string        `json:"status"`
+}
+
 // CallSite .
 type CallSite struct {
 	From     string `json:"from,omitempty"`
