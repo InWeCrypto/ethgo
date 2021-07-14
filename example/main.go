@@ -3,9 +3,9 @@ package main
 import (
 	"fmt"
 
-	"github.com/inwecrypto/ethgo/rpc"
+	"github.com/ximenyan/ethgo/rpc"
 
-	"github.com/inwecrypto/ethgo/erc20"
+	"github.com/ximenyan/ethgo/erc20"
 )
 
 var client *rpc.Client

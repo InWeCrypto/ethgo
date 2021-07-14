@@ -3,10 +3,8 @@ package erc721
 import (
 	"encoding/hex"
 	"fmt"
+	. "github.com/ximenyan/ethgo/contract"
 	"math/big"
-	"strings"
-
-	"github.com/inwecrypto/sha3"
 )
 
 const (
@@ -64,33 +62,25 @@ var (
 	Method_transferLand        = SignABI(DecentraLand_transferLand)
 )
 
-// SignABI sign abi string
-func SignABI(abi string) string {
-	hasher := sha3.NewKeccak256()
-	hasher.Write([]byte(abi))
-	data := hasher.Sum(nil)
-
-	return hex.EncodeToString(data[0:4])
-}
 
 func GetDescription() string {
 	return fmt.Sprintf("0x%s", Method_description)
 }
 
 func OwnerOf(value string) string {
-	value = packNumeric(value, 32)
+	value = PackNumeric(value, 32)
 	return fmt.Sprintf("0x%s%s", Method_ownerOf, value)
 }
 
 func TokensOf(address string) string {
-	address = packNumeric(address, 32)
+	address = PackNumeric(address, 32)
 
 	return fmt.Sprintf("0x%s%s", Method_tokensOf, address)
 }
 
 func SetAssetHolder(to string, value string) ([]byte, error) {
-	to = packNumeric(to, 32)
-	value = packNumeric(value, 32)
+	to = PackNumeric(to, 32)
+	value = PackNumeric(value, 32)
 
 	data := fmt.Sprintf("%s%s%s", Method_setAssetHolder, to, value)
 
@@ -98,30 +88,14 @@ func SetAssetHolder(to string, value string) ([]byte, error) {
 }
 
 func GetTokenMetadata(value string) string {
-	value = packNumeric(value, 32)
+	value = PackNumeric(value, 32)
 	return fmt.Sprintf("0x%s%s", Method_tokenMetadata, value)
 }
 
-func packNumeric(value string, bytes int) string {
-	if value == "" {
-		value = "0x0"
-	}
-
-	value = strings.TrimPrefix(value, "0x")
-
-	chars := bytes * 2
-
-	n := len(value)
-	if n%chars == 0 {
-		return value
-	}
-	return strings.Repeat("0", chars-n%chars) + value
-}
-
 func TransferLand(to string, x, y string) ([]byte, error) {
-	to = packNumeric(to, 32)
-	x = packNumeric(x, 32)
-	y = packNumeric(y, 32)
+	to = PackNumeric(to, 32)
+	x = PackNumeric(x, 32)
+	y = PackNumeric(y, 32)
 
 	data := fmt.Sprintf("%s%s%s%s", SignABI(DecentraLand_transferLand), x, y, to)
 
@@ -129,14 +103,14 @@ func TransferLand(to string, x, y string) ([]byte, error) {
 }
 
 func IsExists(value string) string {
-	value = packNumeric(value, 32)
+	value = PackNumeric(value, 32)
 
 	return fmt.Sprintf("0x%s%s", Method_exists, value)
 }
 
 func TokenOfOwnerByIndex(adress string, value string) string {
-	adress = packNumeric(adress, 32)
-	value = packNumeric(value, 32)
+	adress = PackNumeric(adress, 32)
+	value = PackNumeric(value, 32)
 
 	return fmt.Sprintf("0x%s%s%s", Method_tokenOfOwnerByIndex, adress, value)
 }
@@ -148,21 +122,21 @@ func TakeOwnership(value string) ([]byte, error) {
 }
 
 func DecodeTokenId(value string) string {
-	value = packNumeric(value, 32)
+	value = PackNumeric(value, 32)
 
 	return fmt.Sprintf("0x%s%s", SignABI(DecentraLand_decodeTokenId), value)
 }
 
 func EncodeTokenId(x, y string) string {
-	x = packNumeric(x, 32)
-	y = packNumeric(y, 32)
+	x = PackNumeric(x, 32)
+	y = PackNumeric(y, 32)
 
 	return fmt.Sprintf("0x%s%s%s", SignABI(DecentraLand_encodeTokenId), x, y)
 }
 
 func LandData(x, y string) string {
-	x = packNumeric(x, 32)
-	y = packNumeric(y, 32)
+	x = PackNumeric(x, 32)
+	y = PackNumeric(y, 32)
 
 	return fmt.Sprintf("0x%s%s%s", SignABI(DecentraLand_landData), x, y)
 }
@@ -172,14 +146,14 @@ func Description() string {
 }
 
 func LandOf(address string) string {
-	address = packNumeric(address, 32)
+	address = PackNumeric(address, 32)
 
 	return fmt.Sprintf("0x%s%s", SignABI(DecentraLand_landOf), address)
 }
 
 func OwnerOfLand(x, y string) string {
-	x = packNumeric(x, 32)
-	y = packNumeric(y, 32)
+	x = PackNumeric(x, 32)
+	y = PackNumeric(y, 32)
 
 	return fmt.Sprintf("0x%s%s%s", SignABI(DecentraLand_ownerOfLand), x, y)
 }
@@ -193,31 +167,31 @@ func MaxCount() string {
 }
 
 func SetTaxCost(min, max string) ([]byte, error) {
-	data := SignABI(RedPacket_setTaxCost) + packNumeric(min, 32) + packNumeric(max, 32)
+	data := SignABI(RedPacket_setTaxCost) + PackNumeric(min, 32) + PackNumeric(max, 32)
 
 	return hex.DecodeString(data)
 }
 
 func ChangeWallet(address string) ([]byte, error) {
-	data := SignABI(RedPacket_changeWallet) + packNumeric(address, 32)
+	data := SignABI(RedPacket_changeWallet) + PackNumeric(address, 32)
 
 	return hex.DecodeString(data)
 }
 
 func ChangeMaxCount(value string) ([]byte, error) {
-	data := SignABI(RedPacket_changeMaxCount) + packNumeric(value, 32)
+	data := SignABI(RedPacket_changeMaxCount) + PackNumeric(value, 32)
 
 	return hex.DecodeString(data)
 }
 
 func GetRedPacketStatus(value string) string {
-	data := "0x" + SignABI(RedPacket_getRedPacketStatus) + packNumeric(value, 32)
+	data := "0x" + SignABI(RedPacket_getRedPacketStatus) + PackNumeric(value, 32)
 
 	return data
 }
 
 func GetRedPacketOpenDetail(value string) string {
-	data := "0x" + SignABI(RedPacket_getRedPacketOpenDetail) + packNumeric(value, 32)
+	data := "0x" + SignABI(RedPacket_getRedPacketOpenDetail) + PackNumeric(value, 32)
 
 	return data
 }
@@ -225,12 +199,12 @@ func GetRedPacketOpenDetail(value string) string {
 func NewRedPacket(tokenId, address, from string, value, count, cmd string) ([]byte, error) {
 
 	data := SignABI(RedPacket_newRedPacket) +
-		packNumeric(tokenId, 32) +
-		packNumeric(address, 32) +
-		packNumeric(from, 32) +
-		packNumeric(value, 32) +
-		packNumeric(count, 32) +
-		packNumeric(cmd, 32)
+		PackNumeric(tokenId, 32) +
+		PackNumeric(address, 32) +
+		PackNumeric(from, 32) +
+		PackNumeric(value, 32) +
+		PackNumeric(count, 32) +
+		PackNumeric(cmd, 32)
 
 	return hex.DecodeString(data)
 }
@@ -245,17 +219,17 @@ func OpenMany(tokeId string, addresses []string, cmd string, end bool) ([]byte, 
 	start := hex.EncodeToString(big.NewInt(128).Bytes())
 
 	data := SignABI(RedPacket_openMany) +
-		packNumeric(tokeId, 32) +
-		packNumeric(start, 32) +
-		packNumeric(cmd, 32) +
-		packNumeric(endStr, 32) +
+		PackNumeric(tokeId, 32) +
+		PackNumeric(start, 32) +
+		PackNumeric(cmd, 32) +
+		PackNumeric(endStr, 32) +
 		encodeStrings(addresses)
 
 	return hex.DecodeString(data)
 }
 
 func SendEther(value string) ([]byte, error) {
-	value = packNumeric(value, 32)
+	value = PackNumeric(value, 32)
 
 	data := SignABI(RedPacket_sendEther) + value
 
@@ -263,7 +237,7 @@ func SendEther(value string) ([]byte, error) {
 }
 
 func ChangeRedPacketGatherValue(value string) ([]byte, error) {
-	value = packNumeric(value, 32)
+	value = PackNumeric(value, 32)
 
 	data := SignABI(RedPacket_changeGatherValue) + value
 
@@ -271,7 +245,7 @@ func ChangeRedPacketGatherValue(value string) ([]byte, error) {
 }
 
 func AddRedPacketAdmin(addr string) ([]byte, error) {
-	addr = packNumeric(addr, 32)
+	addr = PackNumeric(addr, 32)
 
 	data := SignABI(RedPacket_addAdmin) + addr
 
@@ -279,7 +253,7 @@ func AddRedPacketAdmin(addr string) ([]byte, error) {
 }
 
 func DelRedPacketAdmin(addr string) ([]byte, error) {
-	addr = packNumeric(addr, 32)
+	addr = PackNumeric(addr, 32)
 
 	data := SignABI(RedPacket_delAdmin) + addr
 
@@ -291,10 +265,10 @@ func encodeStrings(params []string) string {
 
 	lenStr := hex.EncodeToString(length.Bytes())
 
-	codes := packNumeric(lenStr, 32)
+	codes := PackNumeric(lenStr, 32)
 
 	for _, v := range params {
-		codes += packNumeric(v, 32)
+		codes += PackNumeric(v, 32)
 	}
 
 	return codes

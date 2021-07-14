@@ -9,8 +9,8 @@ import (
 	"math/big"
 	"strings"
 
-	"github.com/inwecrypto/gosecp256k1"
 	"github.com/inwecrypto/sha3"
+	"github.com/ximenyan/secp256k1"
 
 	"github.com/inwecrypto/keystore"
 	"github.com/pborman/uuid"

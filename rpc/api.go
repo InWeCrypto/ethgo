@@ -51,7 +51,10 @@ type TransactionReceipt struct {
 	LogsBloom         string        `json:"logsBloom"`
 	Status            string        `json:"status"`
 }
-
+type TXPool struct {
+	Pending map[string]map[string]Transaction
+	Queued map[string]map[string]Transaction
+}
 // CallSite .
 type CallSite struct {
 	From     string `json:"from,omitempty"`

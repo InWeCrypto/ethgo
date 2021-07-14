@@ -6,11 +6,11 @@ import (
 	"math/big"
 	"strings"
 
-	"github.com/inwecrypto/ethgo"
-	"github.com/inwecrypto/ethgo/math"
-	"github.com/inwecrypto/ethgo/rlp"
-	"github.com/inwecrypto/gosecp256k1"
 	"github.com/inwecrypto/sha3"
+	"github.com/ximenyan/ethgo"
+	"github.com/ximenyan/ethgo/math"
+	"github.com/ximenyan/ethgo/rlp"
+	"github.com/ximenyan/secp256k1"
 )
 
 // const asset .
@@ -76,11 +76,8 @@ func (tx *Tx) Sign(prv *ecdsa.PrivateKey) error {
 
 	seckey := math.PaddedBigBytes(prv.D, prv.Params().BitSize/8)
 
-	sig, err := secp256k1.Sign(hash[:], seckey)
+	sig := secp256k1.Sign(hash[:], seckey)
 
-	if err != nil {
-		return err
-	}
 
 	zeroBytes(seckey)
 

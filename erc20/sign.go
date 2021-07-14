@@ -3,9 +3,7 @@ package erc20
 import (
 	"encoding/hex"
 	"fmt"
-	"strings"
-
-	"github.com/inwecrypto/sha3"
+	. "github.com/ximenyan/ethgo/contract"
 )
 
 const (
@@ -34,18 +32,10 @@ var (
 	TransferOwnershipID = SignABI(signTransferOwnership)
 )
 
-// SignABI sign abi string
-func SignABI(abi string) string {
-	hasher := sha3.NewKeccak256()
-	hasher.Write([]byte(abi))
-	data := hasher.Sum(nil)
-
-	return hex.EncodeToString(data[0:4])
-}
 
 // BalanceOf create erc20 balanceof abi string
 func BalanceOf(address string) string {
-	address = packNumeric(address, 32)
+	address = PackNumeric(address, 32)
 
 	return fmt.Sprintf("0x%s%s", BalanceOfID, address)
 }
@@ -67,26 +57,10 @@ func GetSignSymbol() string {
 	return "0x" + SignABI(signSymbol)
 }
 
-func packNumeric(value string, bytes int) string {
-	if value == "" {
-		value = "0x0"
-	}
-
-	value = strings.TrimPrefix(value, "0x")
-
-	chars := bytes * 2
-
-	n := len(value)
-	if n%chars == 0 {
-		return value
-	}
-	return strings.Repeat("0", chars-n%chars) + value
-}
-
 // Transfer .
 func Transfer(to string, value string) ([]byte, error) {
-	to = packNumeric(to, 32)
-	value = packNumeric(value, 32)
+	to = PackNumeric(to, 32)
+	value = PackNumeric(value, 32)
 
 	data := fmt.Sprintf("%s%s%s", SignABI(signTransfer), to, value)
 
@@ -95,9 +69,9 @@ func Transfer(to string, value string) ([]byte, error) {
 
 // TransferFrom .
 func TransferFrom(from, to string, value string) ([]byte, error) {
-	from = packNumeric(from, 32)
-	to = packNumeric(to, 32)
-	value = packNumeric(value, 32)
+	from = PackNumeric(from, 32)
+	to = PackNumeric(to, 32)
+	value = PackNumeric(value, 32)
 
 	data := fmt.Sprintf("%s%s%s%s", TransferFromID, from, to, value)
 
@@ -106,8 +80,8 @@ func TransferFrom(from, to string, value string) ([]byte, error) {
 
 // Approve .
 func Approve(to string, value string) ([]byte, error) {
-	to = packNumeric(to, 32)
-	value = packNumeric(value, 32)
+	to = PackNumeric(to, 32)
+	value = PackNumeric(value, 32)
 
 	data := fmt.Sprintf("%s%s%s", ApproveID, to, value)
 
@@ -115,8 +89,8 @@ func Approve(to string, value string) ([]byte, error) {
 }
 
 func Allowance(from, to string) ([]byte, error) {
-	from = packNumeric(from, 32)
-	to = packNumeric(to, 32)
+	from = PackNumeric(from, 32)
+	to = PackNumeric(to, 32)
 
 	data := fmt.Sprintf("%s%s%s", AllowanceID, to, to)
 
@@ -124,7 +98,7 @@ func Allowance(from, to string) ([]byte, error) {
 }
 
 func TransferOwnership(to string) ([]byte, error) {
-	to = packNumeric(to, 32)
+	to = PackNumeric(to, 32)
 	data := fmt.Sprintf("%s%s", TransferOwnershipID, to)
 
 	return hex.DecodeString(data)

@@ -7,12 +7,12 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/inwecrypto/ethgo/math"
+	"github.com/ximenyan/ethgo/math"
 
-	"github.com/inwecrypto/ethgo"
-	"github.com/inwecrypto/ethgo/keystore"
-	"github.com/inwecrypto/ethgo/rpc"
-	"github.com/inwecrypto/ethgo/tx"
+	"github.com/ximenyan/ethgo"
+	"github.com/ximenyan/ethgo/keystore"
+	"github.com/ximenyan/ethgo/rpc"
+	"github.com/ximenyan/ethgo/tx"
 	"github.com/stretchr/testify/require"
 )
 

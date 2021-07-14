@@ -9,8 +9,8 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/inwecrypto/ethgo"
-	"github.com/inwecrypto/ethgo/erc20"
+	"github.com/ximenyan/ethgo"
+	"github.com/ximenyan/ethgo/erc20"
 
 	"github.com/dynamicgo/slf4go"
 	"github.com/ybbus/jsonrpc"
@@ -18,14 +18,15 @@ import (
 
 // Client neo jsonrpc 2.0 client
 type Client struct {
-	jsonrpcclient *jsonrpc.RPCClient
+	jsonrpcclient jsonrpc.RPCClient
 	slf4go.Logger
 }
 
 // NewClient create new neo client
 func NewClient(url string) *Client {
 	return &Client{
-		jsonrpcclient: jsonrpc.NewRPCClient(url),
+
+		jsonrpcclient: jsonrpc.NewClient(url),
 		Logger:        slf4go.Get("geth-rpc-client"),
 	}
 }
@@ -42,7 +43,7 @@ func (client *Client) call(method string, result interface{}, args ...interface{
 		buff.WriteString(fmt.Sprintf("\targ(%d): %v\n", i, string(data)))
 	}
 
-	client.Debug(buff.String())
+	//client.Debug(buff.String())
 
 	response, err := client.jsonrpcclient.Call(method, args...)
 
@@ -61,7 +62,7 @@ func (client *Client) call(method string, result interface{}, args ...interface{
 	buff.WriteString(fmt.Sprintf("jsonrpc call: %s\n", method))
 	buff.WriteString(fmt.Sprintf("\tresult: %s\n", responsedata))
 
-	client.Debug(buff.String())
+	//client.Debug(buff.String())
 
 	return response.GetObject(result)
 }
@@ -148,11 +149,24 @@ func (client *Client) GetBlockByNumber(number uint64) (val *Block, err error) {
 
 	return
 }
+// GetBlockByNumber get geth last block number
+func (client *Client) GetBlockPending() (val *Block, err error) {
 
+	err = client.call("eth_getBlockByNumber", &val, "pending", true)
+
+	return
+}
 // GetTransactionByHash get geth last block number
 func (client *Client) GetTransactionByHash(tx string) (val *Transaction, err error) {
 
 	err = client.call("eth_getTransactionByHash", &val, tx)
+
+	return
+}
+// GetTransactionPool get geth last block number
+func (client *Client) GetTransactionPool() (val *TXPool, err error) {
+
+	err = client.call("txpool_content", &val)
 
 	return
 }

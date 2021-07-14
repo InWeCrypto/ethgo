@@ -3,32 +3,25 @@ package tx
 import (
 	"encoding/hex"
 	"fmt"
-	"io/ioutil"
 	"math/big"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/dynamicgo/config"
-	"github.com/inwecrypto/ethgo"
-	"github.com/inwecrypto/ethgo/erc20"
-	"github.com/inwecrypto/ethgo/keystore"
-	"github.com/inwecrypto/ethgo/rpc"
-	"github.com/inwecrypto/ethgo/tx"
+	"github.com/ximenyan/ethgo"
+	"github.com/ximenyan/ethgo/erc20"
+	"github.com/ximenyan/ethgo/keystore"
+	"github.com/ximenyan/ethgo/rpc"
+	"github.com/ximenyan/ethgo/tx"
 )
 
 var key *keystore.Key
 
 func init() {
-	rawdata, err := ioutil.ReadFile("../../../conf/test2.json")
-
-	if err != nil {
-		panic(err)
-	}
-
-	key, err = keystore.ReadKeyStore(rawdata, "123456")
-
+	var err error
+	s,_ := hex.DecodeString("1")
+	key, err = keystore.KeyFromPrivateKey(s)
 	if err != nil {
 		panic(err)
 	}
@@ -37,21 +30,20 @@ func init() {
 var client *rpc.Client
 
 func init() {
-	cnf, _ := config.NewFromFile("../../../conf/test.json")
-	client = rpc.NewClient(cnf.GetString("ethtestnet", "http://xxxxxxx:8545"))
+	client = rpc.NewClient("https://bsc-dataseed1.binance.org")
 }
 
 func TestTokenTransfer(t *testing.T) {
 
 	println(key.Address)
 
-	deciamls, err := client.GetTokenDecimals("0x6bf8c045ac5cc022568545997db24c946794c0c2")
+	deciamls, err := client.GetTokenDecimals("0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c")
 
 	require.NoError(t, err)
 
 	println("deciamls :", deciamls.Int64())
 
-	balance, err := client.GetTokenBalance("0x6bf8c045ac5cc022568545997db24c946794c0c2", key.Address)
+	balance, err := client.GetTokenBalance("0x7673d098c65621721e1eb91fcc76b3bbb0198945", key.Address)
 
 	require.NoError(t, err)
 
@@ -59,7 +51,7 @@ func TestTokenTransfer(t *testing.T) {
 
 	transferValue := ethgo.FromCustomerValue(big.NewFloat(10000), deciamls)
 
-	codes, err := erc20.Transfer("0xd253e53c2ee464823cf85f967c75d310012692ae", hex.EncodeToString(transferValue.Bytes()))
+	codes, err := erc20.Transfer("0xF1cC4e0412E63c23dA7e3F881B60DE17F341aF65", hex.EncodeToString(transferValue.Bytes()))
 
 	require.NoError(t, err)
 
